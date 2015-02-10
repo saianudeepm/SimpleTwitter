@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/ivProfile"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        android:src="@drawable/ic_user_placeholder" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Elon Musk"
+        android:id="@+id/tvName"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/ivProfile"
+        android:layout_toEndOf="@+id/ivProfile"
+        android:layout_marginTop="8dp"
+        android:textColor="#ff050605"
+        android:textSize="14sp"
+        android:visibility="visible"
+        android:enabled="false"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="\@elonmusk"
+        android:id="@+id/tvScreenName"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/tvName"
+        android:layout_toEndOf="@+id/tvName"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="4dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Airforce Tracking Radar Went Down. Launch postponed to the same time tomorrow."
+        android:id="@+id/tvTweet"
+        android:layout_below="@+id/tvName"
+        android:layout_toRightOf="@+id/ivProfile"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="2dp"
+        android:elegantTextHeight="false" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ibReply"
+        android:layout_below="@+id/tvTweet"
+        android:layout_alignLeft="@+id/tvTweet"
+        android:cropToPadding="true"
+        android:background="@drawable/ic_reply_cell"
+        android:layout_marginRight="50dp" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ibRetweet"
+        android:background="@drawable/ic_retweet_cell"
+        android:layout_alignTop="@+id/ibReply"
+        android:layout_toRightOf="@+id/ibReply"
+        android:layout_toEndOf="@+id/ibReply"
+        android:layout_below="@id/tvTweet"
+        android:layout_marginRight="50dp" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ibFavorite"
+        android:layout_below="@+id/ivProfile"
+        android:layout_toRightOf="@+id/ibRetweet"
+        android:layout_alignTop="@id/ibReply"
+        android:background="@drawable/ic_favorite_cell" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="16h"
+        android:id="@+id/tvTime"
+        android:layout_alignTop="@+id/tvScreenName"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/tvTweet"
+        android:layout_marginRight="8dp" />
+</RelativeLayout>
