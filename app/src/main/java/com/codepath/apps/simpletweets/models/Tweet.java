@@ -61,8 +61,8 @@ public class Tweet extends Model {
             tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
             
             //Not working ???
-            // tweet.createdAt = tweet.getRelativeTimeAgo(jsonObject.getJSONObject("created_at").toString());
-            tweet.createdAt= "1d";
+             tweet.createdAt = tweet.getRelativeTimeAgo(jsonObject.getJSONObject("created_at").toString());
+            //tweet.createdAt= "1d";
 
         } catch (JSONException e) {
             e.printStackTrace();

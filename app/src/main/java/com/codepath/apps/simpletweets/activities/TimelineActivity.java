@@ -54,8 +54,8 @@ public class TimelineActivity extends ActionBarActivity implements ComposeFragme
                 if(isRefresh){
                     aTweets.clear();
                 }
-                ArrayList<Tweet> tweets = Tweet.fromJSONArray(response);
-                aTweets.addAll(tweets);
+                ArrayList<Tweet> newTweets = Tweet.fromJSONArray(response);
+                aTweets.addAll(newTweets);
                 if(isRefresh){
                     swipeContainer.setRefreshing(false);
                     aTweets.notifyDataSetChanged();    
@@ -90,7 +90,7 @@ public class TimelineActivity extends ActionBarActivity implements ComposeFragme
             public void onLoadMore(int page, int totalItemsCount) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to your AdapterView
-                populateTimeline(page,false);
+                populateTimeline(totalItemsCount,false);
                 // or customLoadMoreDataFromApi(totalItemsCount);
             }
         });
