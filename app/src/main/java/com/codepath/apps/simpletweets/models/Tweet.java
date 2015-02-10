@@ -59,7 +59,9 @@ public class Tweet extends Model {
             tweet.retweetCount = jsonObject.getString("retweet_count");
             tweet.favoriteCount = jsonObject.getString("favorite_count");
             tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
-            //tweet.createdAt = tweet.getRelativeTimeAgo(jsonObject.getJSONObject("created_at").toString());
+            
+            //Not working ???
+            // tweet.createdAt = tweet.getRelativeTimeAgo(jsonObject.getJSONObject("created_at").toString());
             tweet.createdAt= "1d";
 
         } catch (JSONException e) {
@@ -133,6 +135,7 @@ public class Tweet extends Model {
             long dateMillis = sf.parse(rawJsonDate).getTime();
             relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
                     System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+            System.out.println("So the date is " + relativeDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }

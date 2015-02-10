@@ -103,6 +103,7 @@ public class ComposeFragment extends DialogFragment {
             public void onClick(View view) {
                 Toast.makeText(view.getContext(), "Updating the search", Toast.LENGTH_LONG).show();
                 mListener.onComposeTweet(etTweet.getText().toString());
+                etTweet.setText("");
                 dismiss();
 
             }
