@@ -55,13 +55,13 @@ public class Tweet extends Model {
         try {
             tweet.body = jsonObject.getString("text");
             tweet.uid = jsonObject.getLong("id");
-            tweet.createdAt = jsonObject.getString("created_at");
             tweet.retweetCount = jsonObject.getString("retweet_count");
             tweet.favoriteCount = jsonObject.getString("favorite_count");
             tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
             
             //Not working ???
-             tweet.createdAt = tweet.getRelativeTimeAgo(jsonObject.getJSONObject("created_at").toString());
+            String newTime = jsonObject.getString("created_at");
+             tweet.createdAt = getRelativeTimeAgo(newTime);
             //tweet.createdAt= "1d";
 
         } catch (JSONException e) {
@@ -125,7 +125,7 @@ public class Tweet extends Model {
         return favoriteCount;
     }
 
-    public String getRelativeTimeAgo(String rawJsonDate) {
+    public static String getRelativeTimeAgo(String rawJsonDate) {
         String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
         SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
         sf.setLenient(true);
