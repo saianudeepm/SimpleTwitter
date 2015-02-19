@@ -33,6 +33,7 @@ public class UserHeaderFragment extends Fragment {
     TextView tvTweetCount;
     TextView tvFollowingCount;
     TextView tvFollowersCount;
+    TextView tvScreenName;
     
     User currentUser;
 
@@ -85,6 +86,7 @@ public class UserHeaderFragment extends Fragment {
             tvFollowersCount.setText(String.valueOf(user.getFollowersCount()));
             tvTweetCount.setText(String.valueOf(user.getTweetsCount()));
             Picasso.with(getActivity()).load(user.getProfileImageUrl()).into(ivProfile);
+            tvScreenName.setText(user.getScreenName());
             
         }catch (Exception e){
             Log.e(this.toString(),e.getMessage());
@@ -99,7 +101,7 @@ public class UserHeaderFragment extends Fragment {
          tvTweetCount = (TextView) view.findViewById(R.id.tvTweetCount);
          tvFollowingCount = (TextView) view.findViewById(R.id.tvFollowingCount);
          tvFollowersCount = (TextView) view.findViewById(R.id.tvFollowersCount);
-
+         tvScreenName = (TextView) view.findViewById(R.id.tvScreenName);
     }
     
     public void setCurrentUser(User user){

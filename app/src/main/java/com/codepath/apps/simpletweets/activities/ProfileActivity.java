@@ -1,25 +1,15 @@
 package com.codepath.apps.simpletweets.activities;
-import android.support.v4.app.FragmentTransaction; 
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.codepath.apps.simpletweets.R;
-import com.codepath.apps.simpletweets.TwitterApplication;
 import com.codepath.apps.simpletweets.TwitterClient;
-import com.codepath.apps.simpletweets.adapters.TweetsArrayAdapter;
 import com.codepath.apps.simpletweets.fragments.UserHeaderFragment;
 import com.codepath.apps.simpletweets.fragments.UserTimelineFragment;
 import com.codepath.apps.simpletweets.models.User;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.squareup.picasso.Picasso;
-
-import org.apache.http.Header;
-import org.json.JSONObject;
 
 public class ProfileActivity extends ActionBarActivity {
     
@@ -71,9 +61,9 @@ public class ProfileActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        /*if (id == R.id.action_settings) {
             return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }

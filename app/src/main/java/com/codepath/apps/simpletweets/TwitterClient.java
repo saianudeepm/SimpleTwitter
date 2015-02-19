@@ -119,7 +119,7 @@ public class TwitterClient extends OAuthBaseClient {
         //specify the params
         RequestParams params = new RequestParams();
         params.put("screen_name",screenName);
-        getClient().get(apiUrl,null,handler);
+        getClient().get(apiUrl,params,handler);
 
     }
 
@@ -130,7 +130,7 @@ public class TwitterClient extends OAuthBaseClient {
         RequestParams params = new RequestParams();
         params.put("screen_name",screenName);
         params.put("max_id",maxId);
-        getClient().get(apiUrl,null,handler);
+        getClient().get(apiUrl,params,handler);
 
     }
     

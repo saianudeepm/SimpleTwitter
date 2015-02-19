@@ -45,19 +45,25 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
             convertView = inflator.inflate(R.layout.item_tweet, parent, false);
         }
         // Find the views within template
-        ImageView ivProfile = (ImageView) convertView.findViewById(R.id.ivProfile);
-        ivProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                User.setCurrentUser(tweet.getUser());
-            }
-        });
         TextView tvUserName = (TextView) convertView.findViewById(R.id.tvProfileName);
         TextView tvBody = (TextView) convertView.findViewById(R.id.tvTweet);
         TextView tvScreenName = (TextView) convertView.findViewById(R.id.tvScreenName);
         TextView tvTime =  (TextView) convertView.findViewById(R.id.tvTime);
         //set the values
         
+        ImageView ivProfile = (ImageView) convertView.findViewById(R.id.ivProfile);
+        ivProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // only when different user profile is clicked show this
+                if(!tweet.getUser().getScreenName().equals(User.getCurrentUser().getScreenName())){
+
+                    User.setCurrentUser(tweet.getUser());
+                    delegate.showProfile();
+                }
+                    
+            }
+        });
         // to clear out the old image for the recycled view
         ivProfile.setImageResource(android.R.color.transparent);
         // Populate views with tweet data
@@ -74,8 +80,9 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
     }
 
    public interface TweetDelegate {
-       
-       public void showProfile();
+       void showProfile();
+
+       //public void showProfile();
        
    }
     

@@ -115,6 +115,7 @@ public class TimelineActivity extends ActionBarActivity implements
 
     private void launchProfileActivity() {
         Intent intent = new Intent(this,ProfileActivity.class);
+        intent.putExtra("screen_name",User.getCurrentUser().getScreenName());
         startActivity(intent);
     }
 

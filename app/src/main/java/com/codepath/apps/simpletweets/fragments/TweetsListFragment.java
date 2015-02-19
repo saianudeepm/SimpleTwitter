@@ -141,7 +141,8 @@ public abstract class TweetsListFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (TimelineActivity) activity;
+            if(activity instanceof TimelineActivity)
+                mListener = (TimelineActivity) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
