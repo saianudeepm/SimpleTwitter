@@ -55,20 +55,49 @@ public class TwitterClient extends OAuthBaseClient {
     count=25
     since_id=1
     */
-    public void getHomeTimeline(int offset, AsyncHttpResponseHandler handler){
+    public void getHomeTimeline(AsyncHttpResponseHandler handler){
         
         String apiUrl = getApiUrl("statuses/home_timeline.json");
         
         //specify the params
         RequestParams params = new RequestParams();
         params.put("count", 25);
-        params.put("since_id",offset);
-        
         //execute the request
         getClient().get(apiUrl,params,handler);
 
-       
+    }
 
+    public void getMoreHomeTimeline(long maxId, AsyncHttpResponseHandler handler){
+
+        String apiUrl = getApiUrl("statuses/home_timeline.json");
+
+        //specify the params
+        RequestParams params = new RequestParams();
+        params.put("count", 25);
+        //offset 1 refers to initial request
+        params.put("max_id", maxId);
+
+        //execute the request
+        getClient().get(apiUrl,params,handler);
+
+    }
+
+    //mentions timeline request
+    public void getMentionsTimeline(AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("statuses/mentions_timeline.json");
+        //specify the params
+        RequestParams params = new RequestParams();
+        params.put("count", 25);
+        getClient().get(apiUrl, params, handler);
+    }
+
+    public void getMoreMentionsTimeline(long maxId, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("statuses/mentions_timeline.json");
+        //specify the params
+        RequestParams params = new RequestParams();
+        params.put("count", 25);
+        params.put("max_id",maxId);
+        getClient().get(apiUrl, params, handler);
     }
     
     //compose a tweet
@@ -82,5 +111,36 @@ public class TwitterClient extends OAuthBaseClient {
         params.put("status",message);
         getClient().post(apiUrl,params,handler);
         
+    }
+    
+    public void getUserTimeline(String screenName, AsyncHttpResponseHandler handler){
+
+        String apiUrl = getApiUrl("statuses/user_timeline.json");
+        //specify the params
+        RequestParams params = new RequestParams();
+        params.put("screen_name",screenName);
+        getClient().get(apiUrl,null,handler);
+
+    }
+
+    public void getMoreUserTimeline(long maxId, String screenName, AsyncHttpResponseHandler handler){
+
+        String apiUrl = getApiUrl("statuses/user_timeline.json");
+        //specify the params
+        RequestParams params = new RequestParams();
+        params.put("screen_name",screenName);
+        params.put("max_id",maxId);
+        getClient().get(apiUrl,null,handler);
+
+    }
+    
+    
+    //TODO
+    public void getUserInfo(AsyncHttpResponseHandler handler){
+
+        String apiUrl = getApiUrl("account/verify_credentials.json");
+        //specify the params
+        RequestParams params = new RequestParams();
+        getClient().get(apiUrl,null,handler);
     }
 }

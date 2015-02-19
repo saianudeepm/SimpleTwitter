@@ -13,13 +13,14 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:layout_marginRight="8dp"
-        android:src="@drawable/ic_user_placeholder" />
+        android:src="@drawable/ic_user_placeholder"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Elon Musk"
-        android:id="@+id/tvName"
+        android:id="@+id/tvProfileName"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/ivProfile"
         android:layout_toEndOf="@+id/ivProfile"
@@ -36,22 +37,24 @@
         android:text="\@elonmusk"
         android:id="@+id/tvScreenName"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/tvName"
-        android:layout_toEndOf="@+id/tvName"
+        android:layout_toRightOf="@+id/tvProfileName"
+        android:layout_toEndOf="@+id/tvProfileName"
         android:layout_marginTop="8dp"
-        android:layout_marginLeft="4dp" />
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Airforce Tracking Radar Went Down. Launch postponed to the same time tomorrow."
         android:id="@+id/tvTweet"
-        android:layout_below="@+id/tvName"
+        android:layout_below="@+id/tvProfileName"
         android:layout_toRightOf="@+id/ivProfile"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="2dp"
-        android:elegantTextHeight="false" />
+        android:elegantTextHeight="false"
+        android:textColor="#ff050605" />
 
     <ImageButton
         android:layout_width="wrap_content"

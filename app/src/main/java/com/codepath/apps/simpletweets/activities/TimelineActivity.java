@@ -1,132 +1,60 @@
 package com.codepath.apps.simpletweets.activities;
 
-import android.app.DialogFragment;
-import android.net.Uri;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import com.codepath.apps.simpletweets.Adapters.TweetsArrayAdapter;
+import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.simpletweets.R;
 import com.codepath.apps.simpletweets.TwitterApplication;
 import com.codepath.apps.simpletweets.TwitterClient;
+import com.codepath.apps.simpletweets.adapters.TweetsArrayAdapter;
 import com.codepath.apps.simpletweets.fragments.ComposeFragment;
-import com.codepath.apps.simpletweets.listeners.EndlessScrollListener;
-import com.codepath.apps.simpletweets.models.Tweet;
+import com.codepath.apps.simpletweets.fragments.HomeTimelineFragment;
+import com.codepath.apps.simpletweets.fragments.MentionsTimelineFragment;
+import com.codepath.apps.simpletweets.fragments.TweetsListFragment;
+import com.codepath.apps.simpletweets.models.User;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
-public class TimelineActivity extends ActionBarActivity implements ComposeFragment.OnFragmentInteractionListener{
+public class TimelineActivity extends ActionBarActivity implements
+        ComposeFragment.OnFragmentInteractionListener, TweetsListFragment.TweetsListFragmentDelegate, TweetsArrayAdapter.TweetDelegate {
 
     private TwitterClient client;
-    private ArrayList<Tweet> tweets;
-    private TweetsArrayAdapter aTweets;
-    private ListView lvTweets;
-    
     private ComposeFragment mComposeFragment;
+    private TweetsListFragment mTweetsListFragment;
     private FragmentManager fragmentManager;
 
-    private SwipeRefreshLayout swipeContainer;
-    
-    
-    
-    //Send an api request
-    //Fill the list view by creating the listview objects from the json
-    private void populateTimeline(int since, final boolean isRefresh) {
-        client.getHomeTimeline(since,new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                //Deserialize the json object
-                //create the models and add them to the adapter
-                //Load the model data in to the listview
-                if(isRefresh){
-                    aTweets.clear();
-                }
-                ArrayList<Tweet> newTweets = Tweet.fromJSONArray(response);
-                aTweets.addAll(newTweets);
-                if(isRefresh){
-                    swipeContainer.setRefreshing(false);
-                    aTweets.notifyDataSetChanged();    
-                }
-                
-                Log.d("DEBUG", response.toString());
-            }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d("DEBUG", errorResponse.toString());
-            }
-        });
-        
-        
-        
-    }
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
-        //set up the swipe refresh
-        setupSwipeRefresh();
-        //Find the Listview
-        lvTweets = (ListView) findViewById(R.id.lvTweets);
-        //create the arraylist (datasource)
-        tweets = new ArrayList<>();
-        //construct the adapter from the datasource
-        aTweets = new TweetsArrayAdapter(this,tweets);
-        lvTweets.setOnScrollListener(new EndlessScrollListener() {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount) {
-                // Triggered only when new data needs to be appended to the list
-                // Add whatever code is needed to append new items to your AdapterView
-                populateTimeline(totalItemsCount,false);
-                // or customLoadMoreDataFromApi(totalItemsCount);
-            }
-        });
         
-        //attach the adapter to the listview
-        lvTweets.setAdapter(aTweets);
-        //Set the title on the Actionbar
-        getSupportActionBar().setTitle("Home");
-        //get the client
-        client = TwitterApplication.getRestClient();
-        //populate the timeline with the tweets
-        populateTimeline(1,false);
-
         //fragment inits
         fragmentManager= getSupportFragmentManager();
         mComposeFragment = new ComposeFragment();
-    }
-
-    private void setupSwipeRefresh() {
-        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
-        // Setup refresh listener which triggers new data loading
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                // Your code to refresh the list here.
-                // Make sure you call swipeContainer.setRefreshing(false)
-                // once the network request has completed successfully.
-                populateTimeline(1,true);
-            }
-        });
-
-        // Configure the refreshing colors
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
+        //get the client
+        client = TwitterApplication.getRestClient();
+        // Get the ViewPager and set it's PagerAdapter so that it can display items
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager()));
+        // Give the PagerSlidingTabStrip the ViewPager
+        PagerSlidingTabStrip tabsStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        // Attach the view pager to the tab strip
+        tabsStrip.setViewPager(viewPager);
 
     }
 
@@ -154,6 +82,8 @@ public class TimelineActivity extends ActionBarActivity implements ComposeFragme
         return super.onOptionsItemSelected(item);
     }
 
+    
+    //Private Methods
     @Override
     public void onComposeTweet(String message) {
         // post the message to the time line
@@ -161,7 +91,7 @@ public class TimelineActivity extends ActionBarActivity implements ComposeFragme
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Toast.makeText(TimelineActivity.this,"posted the tweet",Toast.LENGTH_SHORT).show();
-                populateTimeline(1,true);
+                //TODO send this using a callback to update the adapter
             }
 
             @Override
@@ -169,5 +99,89 @@ public class TimelineActivity extends ActionBarActivity implements ComposeFragme
                 Toast.makeText(TimelineActivity.this,"unable to post the tweet",Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onTweetsListFragment(String message) {
+        //TODO if needed to get any message from TweetsListFragments
+    }
+
+    //handle on profile menu item click
+    public void onProfileView(MenuItem item) {
+         showProfile();
+
+        
+    }
+
+    private void launchProfileActivity() {
+        Intent intent = new Intent(this,ProfileActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void showProfile() {
+
+        // we need the user before we can show his details in the profile view
+        client = TwitterApplication.getRestClient();
+        if(User.getCurrentUser()!= null){
+            //launch profile activity
+            launchProfileActivity();
+
+        }
+        else {
+            client.getUserInfo(new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject jsonObject) {
+                    //Deserialize the json object
+                    //create the models and add them to the adapter
+                    //Load the model data in to the listview
+
+                    User user = User.fromJSON(jsonObject);//gets the current user
+                    Log.d("DEBUG", jsonObject.toString());
+                    launchProfileActivity();
+
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    Log.d("DEBUG", errorResponse.toString());
+                    Toast.makeText(TimelineActivity.this, "ERROR fetching user details", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        
+    }
+
+    //Returns the order of fragments in the view pager
+    public class TweetsPagerAdapter extends FragmentPagerAdapter {
+        private String tabTitles [] = {"Home", "Mentions"};
+        
+        //Adapter gets the fragment manager to insert or remove fragments from the activity
+        TweetsPagerAdapter(FragmentManager fm){
+            super(fm);
+        }
+
+        //The order and creation of the fragments within the pager
+        @Override
+        public Fragment getItem(int position) {
+            switch (position){
+                case 0: return new HomeTimelineFragment();
+                
+                case 1: return new MentionsTimelineFragment();
+                
+            }
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return tabTitles.length;
+        }
+       
+        @Override
+        public CharSequence getPageTitle(int position) {
+            // Generate title based on item position
+            return tabTitles[position];
+        }
     }
 }

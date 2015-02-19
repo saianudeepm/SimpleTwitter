@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="sai anudeep"
-        android:id="@+id/tvName"
+        android:id="@+id/tvProfileName"
         android:textColor="#ff050605"
         android:textSize="14sp"
         android:visibility="visible"
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:text="\@saianudeepm"
         android:id="@+id/tvScreenName"
-        android:layout_below="@+id/tvName"
+        android:layout_below="@+id/tvProfileName"
         android:layout_toRightOf="@+id/ivProfile"
         android:layout_toEndOf="@+id/ivProfile" />
 
@@ -77,8 +77,8 @@
         android:textAllCaps="false"
         android:textColor="#ffffffff"
         android:layout_below="@+id/etTweet"
-        android:layout_alignRight="@+id/tvName"
-        android:layout_alignEnd="@+id/tvName"
+        android:layout_alignRight="@+id/tvProfileName"
+        android:layout_alignEnd="@+id/tvProfileName"
         android:background="#ffdd816c" />
 
 </RelativeLayout>
